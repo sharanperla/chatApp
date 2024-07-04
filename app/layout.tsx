@@ -4,6 +4,7 @@ import "./globals.css";
 
 import ConvexClientProvider from "@/provider/convexClientProvider";
 import { TooltipProvider } from "@radix-ui/react-tooltip";
+import { ThemeProvider } from "@/components/ui/theme/Theme-provider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -21,11 +22,16 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
           
+            <ThemeProvider  attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange>
         <ConvexClientProvider>
           <TooltipProvider>
              {children}
              </TooltipProvider>
         </ConvexClientProvider>
+             </ThemeProvider>
         </body>
     </html>
   );

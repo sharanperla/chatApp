@@ -6,8 +6,8 @@ type Props = React.PropsWithChildren<{}>
 const ConversationLayout = ({children}: Props) => {
   return (
     <>
-    <ItemList title='Conversations'>{children}</ItemList>
- 
+    <ItemList title='Conversations'>Conversation page</ItemList>
+    {children}
     </>
   )
 }

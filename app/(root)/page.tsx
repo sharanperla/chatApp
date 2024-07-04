@@ -8,8 +8,7 @@ import LoadingLogo from "@/components/shared/loadingLogo";
 
 
 export default function Home() {
-  return (
-  null
-  );
+  return null
+
 }
 

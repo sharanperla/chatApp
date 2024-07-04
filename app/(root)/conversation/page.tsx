@@ -1,4 +1,5 @@
-import ConversationFallBack from '@/components/shared/conversation/ConversationContainer'
+
+import ConversationFallBack from '@/components/shared/conversation/ConversationFallBack'
 import React from 'react'
 
 type Props = {}

@@ -8,6 +8,7 @@ import { Tooltip, TooltipContent } from "@radix-ui/react-tooltip";
 import {Button} from "@/components/ui/button" 
 import Link from 'next/link' 
 import { useConversation } from "@/hooks/useConversation";
+import { ThemeToggle } from "@/components/ui/theme/Theme-toggel";
 
 
  const  MobileNav = () => {
@@ -22,7 +23,8 @@ import { useConversation } from "@/hooks/useConversation";
              return <li key={id} className="relative"><Link href={path.href}><Tooltip><TooltipTrigger><Button size="icon" variant={path.active? "default" : "outline"}>{path.icon}</Button></TooltipTrigger><TooltipContent align="center" side="bottom" style={{ zIndex: 9999 }} className="bg-white rounded-sm p-2 text-black m-2 shadow-xl "><p >{path.name}</p></TooltipContent></Tooltip></Link></li>
         })
     }
-    <div ><UserButton/></div>
+    <li><ThemeToggle/></li>
+    <li ><UserButton/></li>
     </ul></nav>
     
     </Card>

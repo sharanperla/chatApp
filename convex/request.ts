@@ -30,15 +30,15 @@ export const create=mutation({
                 throw new ConvexError("reciver not found ")
             }
 
-            const requestAlreadySent=await ctx.db.query("requests").withIndex("by_receiver_sender",(q)=>q.eq("receiver",receiver._id).eq("sender",currentUser._id))
+            const requestAlreadySent=await ctx.db.query("requests").withIndex("by_receiver_sender",(q)=>q.eq("receiver",receiver._id).eq("sender",currentUser._id)).unique()
             if(requestAlreadySent)
             {
                 throw new ConvexError("request already sent ")
             }
-            const requestAlreadyRecieved=await ctx.db.query("requests").withIndex("by_receiver_sender",(q)=>q.eq("receiver",currentUser._id).eq("sender",receiver._id))
+            const requestAlreadyRecieved=await ctx.db.query("requests").withIndex("by_receiver_sender",(q)=>q.eq("receiver",currentUser._id).eq("sender",receiver._id)).unique()
             if(requestAlreadySent)
             {
-                throw new ConvexError("this user already sent you a request")
+                throw new ConvexError("this user already sent you a request") 
             }
             const request=await ctx.db.insert("requests",{
                 sender:currentUser._id,

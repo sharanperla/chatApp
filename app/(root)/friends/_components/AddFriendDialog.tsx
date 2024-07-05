@@ -108,7 +108,7 @@ await createRequest({email:values.email}).then(()=>{form.reset()
             />
 
             <DialogFooter>
-              <Button disabled={false} type="submit">
+              <Button disabled={pending} type="submit">
                 send
               </Button>
             </DialogFooter>

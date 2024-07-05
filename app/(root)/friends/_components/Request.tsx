@@ -4,6 +4,11 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import React from "react";
 import { Check, User, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useMutationState } from "@/hooks/useMutationState";
+import { api } from "@/convex/_generated/api";
+import { toast } from "sonner";
+import { ConvexError } from "convex/values";
+
 
 type Props = {
   id: Id<"requests">;
@@ -13,6 +18,8 @@ type Props = {
 };
 
 const Request = ({ id, imageUrl, username, email }: Props) => {
+    const {mutate:denyRequest,pending:denyPending} = useMutationState(api.request.deny)
+    const {mutate:acceptRequest,pending:acceptPending} = useMutationState(api.request.accept)
   return (
     <Card className="w-full p-2 flex  flex-row items-center justify-between gap-2">
       <div className="flex items-center gap-4 truncate">
@@ -27,10 +34,22 @@ const Request = ({ id, imageUrl, username, email }: Props) => {
           <p className="text-xs text-muted-foreground truncate">{email}</p>
         </div>
         <div className="flex items-center gap-2">
-            <Button size="icon" onClick={()=>{}}>
+            <Button size="icon" disabled={denyPending || acceptPending} onClick={()=>{
+               acceptRequest({id}).then(()=>{
+                toast.success("Accepted")
+            }).catch((error)=>{
+                toast.error(error instanceof ConvexError?error.data:"Unexpected error occured")
+            })
+            }}>
                       <Check/>
             </Button>
-            <Button size="icon" variant="destructive" onClick={()=>{}}>
+            <Button size="icon"  disabled={denyPending || acceptPending} variant="destructive" onClick={()=>{
+                denyRequest({id}).then(()=>{
+                    toast.success("Friend request denied")
+                }).catch((error)=>{
+                    toast.error(error instanceof ConvexError?error.data:"Unexpected error occured")
+                })
+            }}>
                       <X className="h-4 w-4"/>
             </Button>
         </div>

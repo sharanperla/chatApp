@@ -10,10 +10,12 @@ type Props = {
     id: Id<"conversations">,
     imageUrl:string,
     username:string,
+    lastMessageSender?:string,
+    lastMessageContent?:string
 
 }
 
-const DMcoversation = ({id,imageUrl,username}: Props) => {
+const DMcoversation = ({id,imageUrl,username,lastMessageContent,lastMessageSender}: Props) => {
   return (
    <Link href={`/conversation/${id}`} className='w-full'>
     <Card className='p-2 flex flex-row items-center gap-4 truncate'>
@@ -26,7 +28,7 @@ const DMcoversation = ({id,imageUrl,username}: Props) => {
             </Avatar>
             <div className='flex flex-col truncate'>
                 <h4 className='truncate'>{username}</h4>
-                <p className='text-sm text-muted-foreground truncate'> start the conversation!</p>
+               {lastMessageSender && lastMessageContent ?<span className='text-sm text-muted-foreground flex truncate overflow-ellipsis'><p className='font-semibold'>{lastMessageSender}{" "}&nbsp;</p><p className='truncate overflow-ellipsis'>{lastMessageContent}</p></span>:<p className='text-sm text-muted-foreground truncate'> start the conversation!</p>}
             </div>
         </div>
     </Card>

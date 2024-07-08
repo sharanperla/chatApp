@@ -23,7 +23,7 @@ const Message = ({fromCurrentUser,senderImage,senderName,lastByUser,content,crea
       <div className={cn("flex flex-col w-full mx-2",{"order-1 items-end":fromCurrentUser,"order-2 items-start":!fromCurrentUser})}>
         <div className={cn("px-4 py-2 rounded-lg max-w-[70%",{"bg-primary text-primary-foreground":fromCurrentUser,"bg-secondary text-secondary-foreground":!fromCurrentUser,"rounded-br-none":lastByUser&&fromCurrentUser,"rounded-bl-none":lastByUser&&!fromCurrentUser})}>
                {
-                type==="text"?<p className='text-wrap break-words whitespace-pre-wrap'>{content}</p>:null
+                type==="text"?<p className='text-wrap break-words whitespace-pre-wrap break-all'>{content}</p>:null
                }  
                <p className={cn("text-xs flex w-full my-1",{"text-primary-foreground justify-end":fromCurrentUser,"text-secondary-foreground justify-start":!fromCurrentUser})}>
                 {formatTime(createdAt)} 

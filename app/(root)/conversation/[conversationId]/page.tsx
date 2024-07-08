@@ -9,6 +9,8 @@ import Header from "./_components/Header";
 import Body from "./_components/body/Body";
 import ChatInput from "./_components/input/ChatInput";
 import RemoveFriendDialog from "./_components/dialog/RemoveFriendDialog";
+import DeletGroupDialog from "./_components/dialog/DeleteGroupDIalog"
+import LeaveGroupDialog from "./_components/dialog/LeaveGroupDIalog";
 
 type Props = {
   params: {
@@ -38,14 +40,24 @@ const ConversationPage = ({ params: { conversationId } }: Props) => {
       open={removeFriendDialogOpen}
       setOpen={setRemoveFriendDialogOpen}
       />
+      <LeaveGroupDialog
+      conversationId={conversationId}
+      open={leaveGroupDialogOpen}
+      setOpen={setLeaveGroupDialogOpen}
+      />
+      <DeletGroupDialog
+      conversationId={conversationId}
+      open={deleteGroupDialogOpen}
+      setOpen={setDeleteGroupDialogOpen}
+      />
       <Header
         name={
           (conversation.isGroup
             ? conversation.name
-            : conversation.otherMember.username) || " "
+            : conversation.otherMember?.username) || " "
         }
         imageUrl={
-          conversation.isGroup ? undefined : conversation.otherMember.imageUrl
+          conversation.isGroup ? undefined : conversation.otherMember?.imageUrl
         }
         options={
           conversation.isGroup

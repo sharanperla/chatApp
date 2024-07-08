@@ -6,6 +6,8 @@ import { useQuery } from "convex/react";
 import { Loader2 } from "lucide-react";
 import React from "react";
 import DMcoversation from "./_components/DMcoversation";
+import CreateGroupDialog from "./_components/CreateGroupDIalog";
+import GroupConversation from "./_components/GroupConversation";
 
 type Props = React.PropsWithChildren<{}>;
 
@@ -13,7 +15,7 @@ const ConversationLayout = ({ children }: Props) => {
   const conversations = useQuery(api.Conversations.get);
   return (
     <>
-      <ItemList title="Conversations">
+      <ItemList title="Conversations" action={<CreateGroupDialog/>}>
         {conversations ? (
           conversations.length === 0 ? (
             <p className="w-full h-full flex items-center justify-center">
@@ -21,7 +23,15 @@ const ConversationLayout = ({ children }: Props) => {
             </p>
           ) : (
             conversations.map((conversation) => {
-              return conversation.conversation.isGroup ? null : (
+              return conversation.conversation.isGroup ? (
+                <GroupConversation
+                  key={conversation.conversation._id}
+                  id={conversation.conversation._id}
+                  name={conversation.conversation.name || ""}
+                  lastMessageContent={conversation.lastMessage?.content}
+                  lastMessageSender={conversation.lastMessage?.sender}
+                />
+              ) : (
                 <DMcoversation
                   key={conversation.conversation._id}
                   id={conversation.conversation._id}

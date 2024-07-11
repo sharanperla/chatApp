@@ -23,6 +23,7 @@ import type * as Message from "../Message.js";
 import type * as Messages from "../Messages.js";
 import type * as request from "../request.js";
 import type * as requests from "../requests.js";
+import type * as Stream from "../Stream.js";
 import type * as user from "../user.js";
 import type * as _utils from "../_utils.js";
 
@@ -44,6 +45,7 @@ declare const fullApi: ApiFromModules<{
   Messages: typeof Messages;
   request: typeof request;
   requests: typeof requests;
+  Stream: typeof Stream;
   user: typeof user;
   _utils: typeof _utils;
 }>;

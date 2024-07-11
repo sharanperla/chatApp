@@ -10,7 +10,7 @@ export default defineSchema({
   })
     .index("by_email", ["email"])
     .index("by_clerkId", ["clerkId"]),
-  requests: defineTable({
+    requests: defineTable({
     sender: v.id("users"),
     receiver: v.id("users"),
   })
@@ -43,4 +43,13 @@ export default defineSchema({
     type: v.string(),
     content: v.array(v.string()),
   }).index("by_conversationId", ["conversationId"]),
+  signals: defineTable({
+    userToCall: v.id("users"), // Adjust "users" if you have a different collection name for users
+    signalData: v.any(),
+    from: v.id("users"), // Adjust "users" if you have a different collection name for users
+  }).index("by_userToCall",["userToCall"]),
+  acceptedCalls: defineTable({
+    to: v.id("users"), // Adjust "users" if you have a different collection name for users
+    signal: v.any(),
+  }),
 });

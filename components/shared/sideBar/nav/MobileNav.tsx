@@ -32,7 +32,7 @@ const MobileNav = () => {
                       >
                         {path.icon}
                       </Button>
-                      {path.count? <Badge className="absolute left-7 bottom-6">{path.count}</Badge>:null}
+                      {path.count? <Badge className="absolute left-7 bottom-6  bg-green-400">{path.count}</Badge>:null}
                     </TooltipTrigger>
                     <TooltipContent
                       align="center"

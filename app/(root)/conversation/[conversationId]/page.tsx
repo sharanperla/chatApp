@@ -25,6 +25,8 @@ const ConversationPage = ({ params: { conversationId } }: Props) => {
   const [callType, setCallType] = useState<"audio" | "video" | null>(null);
 
   const conversation = useQuery(api.Conversation.get, { id: conversationId });
+ 
+        
   return conversation === undefined ? (
     <div className="w-full  flex items-center justify-center">
       <Loader2 className="h-8 w-8" />
@@ -82,8 +84,10 @@ const ConversationPage = ({ params: { conversationId } }: Props) => {
               },
             ]
         }
+        userId={conversation.currentUserId}
+        peerId={conversation.isGroup?conversation.currentUserId: conversation.otherMember?._id}
       />
-      <Body />
+      <Body members={conversation.isGroup? conversation.otherMembers? conversation.otherMembers : [] :conversation.otherMember?[conversation.otherMember]:[]}/>
       <ChatInput />
     </ConversationContainer>
   );

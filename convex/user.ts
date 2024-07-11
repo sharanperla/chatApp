@@ -12,7 +12,7 @@ export const create = internalMutation({
     try {
       await ctx.db.insert("users", args);
     } catch (error) {
-      console.error("Error inserting user:", error);
+      // console.error("Error inserting user:", error);
       throw new Error("Failed to insert user");
     }
   },

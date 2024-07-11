@@ -11,7 +11,7 @@ type Props = {
   peerId: Id<"users">;
 };
 
-const AudioCall = ({ userId ,peerId}: Props) => {
+const AudioCall = ({ userId, peerId }: Props) => {
   const [stream, setStream] = useState<MediaStream | null>(null);
   const [receivingCall, setReceivingCall] = useState(false);
   const [callerSignal, setCallerSignal] = useState<SimplePeer.SignalData | null>(null);
@@ -22,6 +22,7 @@ const AudioCall = ({ userId ,peerId}: Props) => {
 
   const callUserMutation = useMutation(api.Stream.callUser);
   const acceptCallMutation = useMutation(api.Stream.acceptCall);
+  const declineCallMutation = useMutation(api.Stream.declineCall);
 
   const signals = useQuery(api.Stream.incomingCall, { userId });
 
@@ -33,18 +34,24 @@ const AudioCall = ({ userId ,peerId}: Props) => {
         if (userAudio.current) {
           userAudio.current.srcObject = stream;
         }
+        console.log('Stream obtained:', stream);
+      })
+      .catch((error) => {
+        console.error("Error accessing media devices.", error);
       });
 
-      if(signals?.length){
-        const {signalData}=signals[0]
-        setReceivingCall(true)
-        setCallerSignal(signalData)
-      }
+    if (signals?.length) {
+      const { signalData } = signals[0];
+      setReceivingCall(true);
+      setCallerSignal(signalData);
+    }
 
     return () => {
-      if(myPeer.current)
-      {
-        myPeer.current.destroy()
+      if (myPeer.current) {
+        myPeer.current.destroy();
+      }
+      if (stream) {
+        stream.getTracks().forEach((track) => track.stop());
       }
     };
   }, [signals]);
@@ -57,6 +64,7 @@ const AudioCall = ({ userId ,peerId}: Props) => {
     });
 
     peer.on('signal', (signal) => {
+      console.log('Sending signal:', signal);
       callUserMutation({
         userToCall: id,
         signalData: signal,
@@ -64,16 +72,19 @@ const AudioCall = ({ userId ,peerId}: Props) => {
       });
     });
 
-    peer.on('stream', (stream) => {
+    peer.on('stream', (remoteStream) => {
+      console.log('Received remote stream:', remoteStream);
       if (partnerAudio.current) {
-        partnerAudio.current.srcObject = stream;
+        partnerAudio.current.srcObject = remoteStream;
       }
     });
 
-    myPeer.current = peer;
-    
-  }
+    peer.on('error', (err) => {
+      console.error('Peer connection error:', err);
+    });
 
+    myPeer.current = peer;
+  };
 
   const acceptCall = async () => {
     setCallAccepted(true);
@@ -84,30 +95,52 @@ const AudioCall = ({ userId ,peerId}: Props) => {
     });
 
     peer.on('signal', (signal) => {
-      acceptCallMutation({to: userId, signal });
+      console.log('Accepting signal:', signal);
+      acceptCallMutation({ to: userId, signal });
     });
 
-    peer.on('stream', (stream) => {
+    peer.on('stream', (remoteStream) => {
+      console.log('Received remote stream:', remoteStream);
       if (partnerAudio.current) {
-        partnerAudio.current.srcObject = stream;
+        partnerAudio.current.srcObject = remoteStream;
       }
     });
 
-    peer.signal(callerSignal as SimplePeer.SignalData);
+    peer.on('error', (err) => {
+      console.error('Peer connection error:', err);
+    });
+
+    if (callerSignal) {
+      peer.signal(callerSignal);
+    }
+
     myPeer.current = peer;
   };
- 
 
+  const declineCall = async () => {
+    setReceivingCall(false);
+    setCallerSignal(null);
+    declineCallMutation({ id: userId });
+
+    // Stop the local stream
+    if (stream) {
+      stream.getTracks().forEach((track) => track.stop());
+    }
+  };
 
   return (
     <div>
       <audio ref={userAudio} autoPlay muted />
       <audio ref={partnerAudio} autoPlay />
-      <button onClick={() => callUser(peerId)}>Call</button>
+      <Button onClick={() => callUser(peerId)}>
+        <Phone />
+        Call
+      </Button>
       {receivingCall && !callAccepted && (
         <div>
           <h1>Someone is calling...</h1>
-          <button onClick={acceptCall}>Accept</button>
+          <Button onClick={acceptCall}>Accept</Button>
+          <Button onClick={declineCall}>Decline</Button>
         </div>
       )}
     </div>

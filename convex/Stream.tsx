@@ -36,3 +36,32 @@ userId: v.id('users'),
       .collect();
   },
 });
+
+
+export const declineCall = mutation({
+    args: {
+      id: v.id("users"), // Explicitly define 'id' as a string type
+    },
+    handler: async (ctx, { id }) => {
+      try {
+        const signals= await ctx.db.query("signals").withIndex("by_userToCall",q=>q.eq("userToCall",id)).collect()
+        const acceptedCalls= await ctx.db.query("acceptedCalls").withIndex("by_to",q=>q.eq("to",id)).collect()
+        // Attempt to delete using a single, more efficient query
+        await Promise.all(signals.map(
+            async signals=>{
+                await ctx.db.delete(signals._id)
+            }
+        ))
+        await Promise.all(acceptedCalls.map(
+            async acceptedCalls=>{
+                await ctx.db.delete(acceptedCalls._id)
+            }
+        ))
+        
+      } catch (error) {
+        console.error(`Error declining call for user with ID ${id}:`, error);
+        throw error; // Propagate the error for handling
+      }
+    },
+  });
+  

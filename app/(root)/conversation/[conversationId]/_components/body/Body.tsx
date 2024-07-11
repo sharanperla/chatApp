@@ -32,7 +32,9 @@ const Body = ({ members }: Props) => {
         messageId: messages[0].message._id,
       });
     }
-  }, [messages?.length, conversationId, markRead]);
+  }, [messages?.length, conversationId, markRead,messages]);
+
+  // *****************************************************added messages as extra tld by build command******************************
 
   const getSeenMessage = (messageId: Id<"messages">) => {
     console.log(members)

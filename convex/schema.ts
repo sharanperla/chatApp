@@ -51,5 +51,5 @@ export default defineSchema({
   acceptedCalls: defineTable({
     to: v.id("users"), // Adjust "users" if you have a different collection name for users
     signal: v.any(),
-  }),
+  }).index("by_to",["to"]),
 });

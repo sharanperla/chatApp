@@ -52,7 +52,7 @@ const Header = ({ imageUrl, name, options,userId,peerId}: Props) => {
         <h2 className="font-semibold">{name}</h2>
       </div>
       <div className="flex gap-2">
-      <Tooltip>
+      {/* <Tooltip>
         <TooltipTrigger>
           {
             peerId!==undefined&&<AudioCall userId={userId} peerId={peerId} />
@@ -61,7 +61,7 @@ const Header = ({ imageUrl, name, options,userId,peerId}: Props) => {
         <TooltipContent>
           <p>Audio call</p>
         </TooltipContent>
-      </Tooltip>
+      </Tooltip> */}
         {options ? (
           <DropdownMenu>
             <DropdownMenuTrigger>

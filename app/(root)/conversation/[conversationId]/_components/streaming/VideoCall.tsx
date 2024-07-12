@@ -1,11 +1,11 @@
 import { Button } from "@/components/ui/button";
 import { api } from "@/convex/_generated/api";
 import { Id } from "@/convex/_generated/dataModel";
-import { Call, useStreamVideoClient } from "@stream-io/video-react-sdk";
+
 import { useMutation, useQuery } from "convex/react";
 import { Phone } from "lucide-react";
 import React, { useEffect, useRef, useState } from "react";
-import SimplePeer from "simple-peer";
+
 
 type Props = {
   userId: Id<"users">;

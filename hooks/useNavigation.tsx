@@ -1,3 +1,4 @@
+"use client"
 import { usePathname } from "next/navigation"
 import { useMemo } from "react"
 import {MessageSquare, MessageSquareCodeIcon, User, Users, Users2} from "lucide-react"

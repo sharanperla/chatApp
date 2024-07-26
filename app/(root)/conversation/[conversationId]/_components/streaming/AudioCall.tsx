@@ -25,29 +25,7 @@ const AudioCall = ({ userId ,peerId}: Props) => {
 
   const signals = useQuery(api.Stream.incomingCall, { userId });
 
-  useEffect(() => {
-    navigator.mediaDevices
-      .getUserMedia({ video: false, audio: true })
-      .then((stream) => {
-        setStream(stream);
-        if (userAudio.current) {
-          userAudio.current.srcObject = stream;
-        }
-      });
-
-      if(signals?.length){
-        const {signalData}=signals[0]
-        setReceivingCall(true)
-        setCallerSignal(signalData)
-      }
-
-    return () => {
-      if(myPeer.current)
-      {
-        myPeer.current.destroy()
-      }
-    };
-  }, [signals]);
+  
 
   const callUser = async (id: Id<"users">) => {
     const peer = new SimplePeer({

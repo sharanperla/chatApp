@@ -21,7 +21,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body className={`flex items-center justify-center h-screen ${inter.className}`}>
           
             <ThemeProvider  attribute="class"
             defaultTheme="system"
